@@ -1,4 +1,4 @@
-from .listener import initaitor
+from listener import initaitor
 
 if __name__ == '__main__':
     initaitor()
