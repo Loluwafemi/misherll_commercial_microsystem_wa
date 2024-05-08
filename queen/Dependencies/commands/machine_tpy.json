@@ -1,0 +1,27 @@
+
+{
+    "command_name": "EXAMPASS_FUNAAB",
+    "path": {
+        "BASEURL": null,
+        "PATH_OPERATION": 0
+        
+    },
+    "navigation": {
+        "authentication": {
+            "operation": null
+        },
+        "operation": {
+            "operation": null
+        },
+        "exception": {
+            "operation": null
+        }
+    },
+    "author": {
+        "about": null,
+        "authentication": null,
+        "validity": null
+    }
+}
+
+

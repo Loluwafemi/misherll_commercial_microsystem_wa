@@ -1,0 +1,15 @@
+on completion of request operation, copy result[.pdf] as a dictionary containing:
+    user full data,
+    passkey
+    file data
+
+run an zip operation on the file, giving the file a name of:
+    filename: matric_year_date_time.format
+    passkey from user data.
+    protect file with passkey and pass to mega file operator, remove cache and change data status.
+    wait for another. triggered by listener
+
+request is run in 2 state:
+pywhatkit with playwrighter: capture unread message using regex to xls
+ops of xls file, ops of result to mega and
+pywhatkit on each data

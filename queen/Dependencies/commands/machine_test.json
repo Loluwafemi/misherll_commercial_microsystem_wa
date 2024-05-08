@@ -1,0 +1,25 @@
+
+{
+    "command_name": "RECIEPT_FUNAAB",
+    "path": {
+        "BASEURL": null,
+        "PATH_OPERATION": 0
+        
+    },
+    "navigation": {
+        "authentication": {
+            "operation": null
+        },
+        "operation": {
+            "operation": null
+        },
+        "exception": {
+            "operation": null
+        }
+    },
+    "author": {
+        "about": "this command is designed by envi, mastered to deliver a simple tiny microservice operations. These are the commands you can run.",
+        "authentication": "xnsdodewnewokdnjdksdjdkdsjkdsjdk",
+        "validity": "2033092300939390930820932"
+    }
+}

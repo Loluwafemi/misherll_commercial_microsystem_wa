@@ -1,0 +1,11 @@
+Each capture is an independent file.
+containing JSON:
+Name:
+    BASEURL: "URL"
+    Token data
+    PATH_1:
+    PATH_2:
+    PATH_3:
+    NAVIGATOR:
+    Platforms.Name.BASEURL.PATH_1: [keyword],
+    Platforms.Name.BASEURL.PATH_2: [keywords],

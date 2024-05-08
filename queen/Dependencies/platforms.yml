@@ -1,0 +1,65 @@
+EXAMPASS_FUNAAB:
+  BASEURL: "https://the-internet.herokuapp.com/download"
+  PATH_OPERATION: "download/text.txt"
+  PATH_AUTHENTICATION:
+  PATH_X:
+
+  NAVIGATION: {
+    AUTHENTICATION: {
+      verify: "findByClassName=example",
+      execute: findByLinkText=some-file.txt,click
+    },
+    OPERATION: {
+      verify: Null,
+      execute: Null
+    },
+    EXCEPTION: {
+      verify: "",
+      execute: ""
+    }
+  }
+
+
+
+# !!! DO NOT TOUCH by admin
+# STATIC DESIGN TO LOGIN: VERIFY PAGE, EXECUTE QRCODE SCANNING, VERIFY PAGE, VERIFY PAGE CHANGE AND EXPECTATION ELSE CATCH EXCEPTION
+WHATSAPP_ACCESS:
+  BASEURL: "https://web.whatsapp.com/"
+  PATH_OPERATION: 
+  PATH_AUTHENTICATION:
+  PATH_X:
+
+  NAVIGATION: {
+    AUTHENTICATION: {
+      verify: "findByClassName=_3iLTh,click_e,findByClassName=selectable-text,click,input=+2349131301274,findByText=Next,click_e,findByClassName=qfejxiq4,findByClassName=_2I5ox,capture,findByText=Loading your chats",
+      # verify: "findByText=Loading your chats",
+      # verify: "findByText=Loading your chats",
+      execute: "success_pass"
+    },
+    OPERATION: {
+      verify: Null,
+      execute: Null
+    },
+    EXCEPTION: {
+      verify: "",
+      execute: ""
+    }
+  }
+
+
+# # Navigation -> VERIFY
+
+# findByName
+# findByClassName
+# findByID
+# findByTagName
+# findByLinkText
+# findByPartialLinkText
+# findByCss
+# findByXpath
+# findByText
+
+# # Action  -> EXECUTE
+# click
+# input
+# enter

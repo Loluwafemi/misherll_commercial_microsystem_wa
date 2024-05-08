@@ -1,0 +1,20 @@
+USING SVELTE
+
+--features
+  login + create account
+  see accounts [different info]
+    setup config
+    pop up for manual operation
+    dashboard
+      see real time operations
+      trigger or cease operations
+      edit config
+      create platform commands [edit]
+
+-- dashboard[black[80%] and red[15%] and white[5%]]
+  show all components real time: responsive
+  popup request: cloud, whatsapp info, then qr
+  EDIT config
+  control operation
+  view resources
+

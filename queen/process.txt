@@ -1,0 +1,326 @@
+# listener: every seconds, listen to the file given and return a dictionary result template.
+listener operation: 
+    - onPending: take data in full, start request and change status[Processing]
+                 ~protect result[data] and launch it to cloud
+    - onProcessing: do nothing
+    - onProcessed: use WHATKIT to send data
+    - onComplete | onDone: delete data from file
+    
+call globally[.xls]
+# File: opens a single xls file and operate a RUD on it.
+    C: from pywhatkit, create oe edit data to the system.
+    R: READ FROM FILE USING USERID:
+        1. BULK DATA RETURN DATA TO BE USED BY THREAD
+        2. SINGLE FETCH TO GET AND MANIPULATE DATA
+    U: UPDATING DATA[2.] from R.2 and recreating
+    D: Delete single data
+    
+    file is an excel and controlled by writexcel module.
+    all operation inherited from this module
+
+
+xls status keywords are:
+    1. Pending.
+    2. Processing.
+    3. Processed.
+    5. Complete | Done.
+
+
+use selenium for request
+
+
+
+- install modules
+    - openpyxl pip install openpyxl substitute with json
+    - mega.py pip install mega.py
+    - pywhatsapp pip install alright
+    - selenium 
+
+        -Done
+
+
+- STEPS
+- setup a timer decorator for listener that takes a parameter [default, semi--] ✅
+- setup file operator and a deque for delete ✅
+- setup the listener operator for the listener results ✅
+- use faker to fill in xls file and let listener return and trigger the operator.✅
+- for every return [status=Pending] create a [~n]THREAD, THREAD takes the whole data. ✅
+- THREAD use the USERID to change the shared file [status=Processing|Error Data|retry=+retry, Processed, Done], steps of function and error handling for each ✅
+- sort THREAD data by retry value, descending order
+- for all function used by THREAD let them extend the pywhatsapp, mega and selenium operation ✅
+- after THREAD successfully Processed data and passed it to mega[shared]
+- THREAD change status [status=done] ✅
+- listener finds the done file and delete them ✅
+
+
+OPERATIONS
+
+# create a timer that calls a function every interval,
+# the function yields a dictionary template containing data from a xlread,
+# and observer function observes the data and react to the generated result,
+# condition to trigger the observer are:
+# if xlread->status = pending: result is > 0 ✅
+    # trigger, and create a thread that takes the whole content and the same time update the status-> processing
+    # the thread: [use selenium->incognito run the ops, the login, the ops and then the result is protected and sent to the megs
+    # mega.cloud which is a shared function amongst all thread]
+    
+    # THREAD operation
+    # 1. change status[processing]✅
+    # 2. run task[ops] ✅
+    # 3. protect result and send to mega.py.
+    # 4. update the data[mega url] and change status[processed]. ✅
+    # kill thread✅
+    
+# if xlread->status = processed: result > 0
+    # WHATKIT.
+    # 1. check if logged and running cached
+    # 2. if true, foreach data, take data[number], send templated msg with url, psk
+    # 3. if true edit file status[done], done.
+    
+# if xlread->status = done: result > 0 ✅
+    # 1. foreach, call xldelete(item)
+
+
+aim is not to print to screen the result of each count,
+aim is to [call the observer every interval] which calls the recorder and use
+the output to decides the event which gets triggered to
+subscribe to events isolatively, 
+
+
+
+thread dies when it returns,
+
+history.Opsmsg = SysError, ServError, CredError, cloudError, SuccessOps
+
+
+a thread takes a data, uses the automator and process the data,
+the processed data[from automator] parse the output to modiator
+which whether to terminate[return] or save to cloud.
+
+
+use record to decide:
+terminate -> lock and use record, operation to change the status and return record
+save to cloud -> lock cloud function[ext], 
+		use result to change status
+				add url
+				return record
+
+
+# Note on thread
+
+the ThreadPoolExecutor class is imported from concurent.futures
+- on parsing a list, status, and target to its custom constructor,
+- the thread ops check if the class is cached,
+- if cached, it jumped to adding resources to pending workers(vacant) which iterated with the value calculated from the max - alive_worker
+- if not cached, the list[:max] is mapped to the task and does not wait,
+- from the outer method body, we cached every possible error and cancel the worker, while doing this, we update the file history and parse the data[future] to ending callback which update the file and end the worker.
+ 
+remove the cache data from the threading.local() with -> del self.local.pin
+
+for every executor, once done, 
+1. use a function to submit another(new) task, func(executor, func, data[])? = alternative to caching
+2. if done: get the result, edit the data, save to  file
+3. if 2 return true, kill thread and move on or use 1
+4. if 2 return false, kill thread an move on or use 1
+
+
+--------------------------------------------------------------------------------
+selenium operation steps using data.platform data.
+-- behaviour = confirm a page with url, navigate(goto) url, listen to output(media)
+operation - final
+
+authentication - entry [find elements, input to elements, confirm elements requirement, submit or click a button]
+
+obstruction(possible error) -> operation | backWith errorMessage
+
+- (base/operation) open url
+# gets to page [authentication, authentication with error message, operation page, result found] (recognize page with defined url)
+- (base/authentication) find for each credentials navigate elements and input credentials
+# get to page [authentication, authentication with error message, operation page, result found] (recognize page with defined url)
+- (base/operation) goto url(base/operation)
+
+- click a button [defined on the platform]
+
+
+
+run url+operation .A
+-redirect(check for keywords)-> use if to translate
+if authkeywords: 
+    run auth operation .B
+    -redirect(check for keywords)-> use if to translate
+    if (cookies + operationkeywords):
+    run operation
+    else run url+operation
+    -output either : media || non->pageElement keywords || Unknown  = write to history
+elseif (Unknown)
+    write to history
+
+and return history
+
+
+#A OPERATIONS
+    IF COOKIES AND KEYWORDS:
+        [CALL A.OPERATIONS]
+        RETURN history
+    ELSE: [CALL B]
+
+#B AUTHENTICATION:
+    IF NOT COOKIES AND AUTHENTICATIONKEYWORDS
+        [CALL B.OPERATIONS]
+        IF B.OPERATIONS RETURN TRUE [CALL A]
+        ELSE [CALL C.OPERATIONS]
+#C ERROR || Unknown
+    WRITE TO history AND RETURN
+
+
+TO IMPLEMENT THIS:
+WE CREATE A CLASS THE DEFINES ALL THE selenium FUNCTION, 
+AND ALL THE FUNCTION WILL INHERIT THE POINTER ATTRIBUTES
+
+--THE POINTER IS AN INTERFACE TO BE USED BY ALL FUNCTION
+--THE FUNCTIONS ARE GLOBAL AND CAN BE ACCESSED WITH JUST A CALL
+
+OR THE FIELD IS REASSEMBLE AND USE AS FOLLOWS:
+FUNCTION.POINTER = KEYWORD
+
+ TO
+FUNCTION(POINTER, KEYWORD)
+
+# some functin doesn't take in keyword nor POINTER
+function = None
+
+##
+1. run a webdriver manager and calibrate its paths
+2. verify its caching system and capture internal returned data
+3. run the class within a thread which
+    i. is stored in a map
+    ii. cached in thread.local space
+    iii. design the thread the run infinitely while the class captured data is found
+    iv. when the subscriber is called with passed data, the cache determine if to proceed or to setup environment
+
+
+###
+
+
+
+using continuousprocess to scan the whatsapp inbox for request
+will sleep for 2sec then scan
+
+the system will scan the response file for pending and inbox for unread message and return list, list is either send message to the bot or get message from the bot.
+for each item of the list we check if any matches the regex(first word in the sentence and capitalized)
+if any, the function generate a dictionary and call a function to use the dictionary[external>>request]
+
+
+list of commands & response >> yaml
+REGISTER data          parse(command, data=None)
+DELETE data
+VERIFY data
+SHOW_LOG
+HISTORY
+OTHER(S) data || None
+    PRIMARY COMMANDS >> external[crud]
+
+if any match(regex)
+
+call a function to use the result
+use the result >> call a ThreadPoolExecutor(number=100)
+target = parse
+arg = (command, data)
+
+request and response are processed and stored in database
+
+system_command:
+SEND_MESSAGE
+
+
+
+
+
+
+
+
+
+1. capture download + write to system
+    save into temporary local storage, on closing selenium, iterate storage an protect file while saving to public storage, which returns the filename, pskey and file type, which is saved to the data.history
+2. data protection
+3. data UPDATING
+4. mega
+5. WHATKIT
+6. WHATKIT + operation[regex or ops]
+7. UI design
+
+
+[{'cmd': '>COMMAND', '-var_{++1}': '-var', 'str': ''}, {'cmd': '>COMMAND', '-var_{++1}': '-var', 'str': ''}, {'cmd': '>COMMAND', '-var_{++1}': '-var', 'str': ''}, {'cmd': '>COMMAND', '-var_{++1}': '-var', 'str': ''}, {'cmd': '>COMMAND', '-var_{++1}': '-var', 'str': ''}, {'cmd': '>COMMAND', '-var_{++1}': '-var', 'str': ''}]
+
+
+[
+    {'cmd': '>COMMAND', '-var_1': '-var', 'str': ''}, 
+    {'cmd': '>COMMAND', '-var_1': '-var', 'str': ''}, 
+    {'cmd': '>COMMAND', '-var_1': '-var', 'str': ''}, 
+    {'cmd': '>COMMAND', '-var_1': '-var', 'str': ''}, 
+    {'cmd': '>COMMAND', '-var_1': '-var', 'str': ''}, 
+    {'cmd': '>COMMAND', '-var_1': '-var', 'str': ''}]
+
+
+# combined resources
+
+    [
+        {
+            'recipient': None, 
+            'content': {
+                'command': None, 
+                'var_': None
+                }, 
+            'task': 'read',
+            'status': 'pending', 
+            'request': {
+                'type': 'CUSTOM_API', 
+                'state': 'END'
+                    }
+        }, 
+        {
+            'response': None, 
+            'recipient': None, 
+            'priority': 0, 
+            'task': 'write', 
+            'status': 'pending', 
+            'response_type': 'elemental.custom'
+        }
+    ]
+
+
+
+OM defining and setting up the system
+-structure of the system behaviour is
+> whenever theres an unread messages, get a list of those sender(number and username)
+if either the number is already found in the collector file{containing the recipient's: number, username and history[]}
+
+and also the unread message contains any of the registered command[authenticate]
+-proceed to getting the user's data command and variable
+
+
+and on doing this put the data to a ThreadPool and on doing this send a feedback to the number(to render the space closed and avoid recurciveness) 
+
+
+--if the neither the number nor the username is found, and the command is global, process the command only using the command variable as user's data: if data already found[username or number] send back a feedback for correction
+
+else, take the variables and save to the collector, on successfully doing that send a message confirming access to the system
+
+
+command:
+    access: global, authorize, custom_token[passage to access variable and condition]
+
+
+FIRST APP:
+SPACCE=>
+BUILT ON GOOGLE CLOUD AND CONTROLLED WITH POSTGRESS + GRAPHQL
+ON OPENING AN ACCOUNT:
+the system check if your data(number and username found in the crowd_table)
+if not a request is made to get once
+
+the system request for the user's email and then authenticate it with google
+user's data spawn information of profile table filling the table with necessary information
+
+
+
+

@@ -1,0 +1,15 @@
+[
+    {
+        "recipient": null,
+        "task": "read",
+        "status": "pending",
+        "request": {
+            "type": "CUSTOM_API",
+            "state": "END"
+        },
+        "content": {
+            "command": null,
+            "var_": null
+        }
+    }
+]

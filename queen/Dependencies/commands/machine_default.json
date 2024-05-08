@@ -1,0 +1,30 @@
+
+{
+    "command_name": "RESULT_FUNAAB",
+    "path": {
+        "BASEURL": "https://web.whatsapp.com/",
+        "MACHINE_TYPE": 0,
+        "variable": {
+            "v": null,
+            "p": null,
+            "w": null
+        }
+    
+    },
+    "navigation": {
+        "authentication": {
+            "operation": "findByClassName=_3iLTh,click_e,findByClassName=selectable-text,click,input=+2349131301274,findByText=Next,click_e,findByClassName=qfejxiq4,findByClassName=_2I5ox,capture,findByText=Loading your chats"
+        },
+        "operation": {
+            "operation": null
+        },
+        "exception": {
+            "operation": null
+        }
+    },
+    "author": {
+        "about": null,
+        "authentication": null,
+        "validity": null
+    }
+}

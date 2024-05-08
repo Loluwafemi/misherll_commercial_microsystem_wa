@@ -1,0 +1,4 @@
+data_json: path
+request_json: path
+response_json: path
+directory_registry: path

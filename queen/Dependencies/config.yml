@@ -1,0 +1,18 @@
+Mega:
+  worker: 5
+  username: 
+  password:
+
+Selenium:
+  worker: 8
+  path: ''
+
+Whatsapp:
+  worker: 1
+  path: '../'
+  screenshot: TRUE
+
+
+default: 
+  worker: 10
+  path: '..'
